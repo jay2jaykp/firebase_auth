@@ -1,26 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import * as React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Route, Switch } from "react-router-dom";
+import Home from "./pages/home/Home";
+import Dashboard from "./pages/dashboard/Dashboard";
+import Login from "./pages/login/Login";
+import ProtectedRoute from "./components/protected_route/ProtectedRoute";
+import AuthProvider from "./services/auth/AuthProvider";
+import MyNavbar from "./components/navbar/Navbar";
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <AuthProvider>
+        <MyNavbar />
+        <Switch>
+          <ProtectedRoute path="/home">
+            <Home />
+          </ProtectedRoute>
+          <ProtectedRoute path="/dashboard">
+            <Dashboard />
+          </ProtectedRoute>
+          <Route path="/profile" component={Login} />
+        </Switch>
+      </AuthProvider>
+    </>
   );
-}
+};
 
 export default App;
